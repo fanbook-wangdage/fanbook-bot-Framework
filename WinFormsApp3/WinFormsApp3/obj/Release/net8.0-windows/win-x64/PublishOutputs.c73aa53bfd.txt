@@ -1,0 +1,2 @@
+C:\Users\fanbo\source\repos\WinFormsApp3\WinFormsApp3\bin\Release\net8.0-windows\publish\win-x64\WinFormsApp3.pdb
+C:\Users\fanbo\source\repos\WinFormsApp3\WinFormsApp3\bin\Release\net8.0-windows\publish\win-x64\WinFormsApp3.exe
