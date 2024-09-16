@@ -10,7 +10,6 @@ namespace WinFormsApp3
     public partial class Form1 : Form
     {
         private string url; // 存储从JSON获取的URL
-        test; //故意引发错误
 
         public Form1()
         {
