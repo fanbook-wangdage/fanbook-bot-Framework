@@ -38,6 +38,8 @@ except:
     pass    
 from tqdm import tqdm
 
+1/0
+
 try:
     sentry_sdk.init(
         dsn="https://b276d223ebdc092ad9d655d09403355d@o4507525750521856.ingest.us.sentry.io/4507924708982784",
