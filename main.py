@@ -52,6 +52,7 @@ def main(runType='run'):
         )
             
         logger.info('正在获取配置信息')
+        1/0
         try:
             appmsg=requests.get('https://124.221.67.43/hj_data.json')
             appmsg=appmsg.json()
