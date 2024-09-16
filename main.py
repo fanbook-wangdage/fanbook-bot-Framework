@@ -387,5 +387,6 @@ print(fanbookbotapi.send_user_message(bot_token='').text)
             pass
 if __name__ == '__main__':
     main(runType='run')
-else:
+
+def _test():
     main(runType='test')
