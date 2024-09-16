@@ -389,4 +389,4 @@ if __name__ == '__main__':
     main(runType='run')
 
 def _test():
-    main(runType='test')
+    return main(runType='test')
