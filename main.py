@@ -32,7 +32,10 @@ import traceback
 import sentry_sdk
 import time
 import sys
-import win32api    
+try:
+    import win32api
+except:
+    pass    
 from tqdm import tqdm
 
 try:
@@ -174,9 +177,12 @@ try:
 
     if _v<appmsg['main']:
         logger.info('发现新版本主程序')
-        os.system('taskkill /f /im appMessage.exe')
-        win32api.ShellExecute(0, 'open', 'hj_update.exe', '', '', 1)
-        sys.exit()
+        try:
+            os.system('taskkill /f /im appMessage.exe')
+            win32api.ShellExecute(0, 'open', 'hj_update.exe', '', '', 1)
+            sys.exit()
+        except:
+            logger.warning('更新错误')
 
     logger.info('初始化完成')
 
@@ -341,15 +347,20 @@ F：发送反馈
                         error_info = traceback.format_exc()
                         logger.error(f"删除文件时发生错误：{error_info}")
         elif input_file_path == 'F':
-            win32api.ShellExecute(0, 'open', 'ErrorUpload.exe', '', '', 1)
-            time.sleep(3)
+            try:
+                win32api.ShellExecute(0, 'open', 'ErrorUpload.exe', '', '', 1)
+                time.sleep(3)
+            except:
+                pass
 except:
     #获取详细的错误信息
     error_info = traceback.format_exc()
     logger.critical(f"发生错误：{error_info}")
     #写入错误日志
-    with open('error.log', 'a', encoding='utf-8') as f:
-        f.write(error_info)
-    win32api.ShellExecute(0, 'open', 'ErrorUpload.exe', '', '', 1)
-    time.sleep(5)
-    
+    try:
+        with open('error.log', 'a', encoding='utf-8') as f:
+            f.write(error_info)
+        win32api.ShellExecute(0, 'open', 'ErrorUpload.exe', '', '', 1)
+        time.sleep(5)
+    except:
+        pass
