@@ -9,17 +9,18 @@ namespace WinFormsApp3
 {
     public partial class Form1 : Form
     {
-        private string url; // ´æ´¢´ÓJSON»ñÈ¡µÄURL
+        private string url; // å­˜å‚¨ä»JSONè·å–çš„URL
+        test; //æ•…æ„å¼•å‘é”™è¯¯
 
         public Form1()
         {
             this.StartPosition = FormStartPosition.CenterScreen;
             this.TopMost = true;
             InitializeComponent();
-            LoadDataAsync(); // Òì²½¼ÓÔØÊı¾İ
+            LoadDataAsync(); // å¼‚æ­¥åŠ è½½æ•°æ®
         }
 
-        // ¶¨ÒåÀàÓÃÓÚ·´ĞòÁĞ»¯JSONÊı¾İ
+        // å®šä¹‰ç±»ç”¨äºååºåˆ—åŒ–JSONæ•°æ®
         public class Data
         {
             public string t1 { get; set; }
@@ -40,13 +41,13 @@ namespace WinFormsApp3
                     {
                         label1.Text = data.t1;
                         label3.Text = data.t2;
-                        url = data.url; // ½«URL±£´æÒÔ¹©ºóĞøÊ¹ÓÃ
+                        url = data.url; // å°†URLä¿å­˜ä»¥ä¾›åç»­ä½¿ç”¨
                     }
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show("ÎŞ·¨»ñÈ¡Êı¾İ: " + ex.Message);
+                MessageBox.Show("æ— æ³•è·å–æ•°æ®: " + ex.Message);
             }
         }
 
@@ -58,28 +59,28 @@ namespace WinFormsApp3
                 {
                     ProcessStartInfo psi = new ProcessStartInfo
                     {
-                        FileName = url, // Ê¹ÓÃ´ÓJSON»ñÈ¡µÄurl
+                        FileName = url, // ä½¿ç”¨ä»JSONè·å–çš„url
                         UseShellExecute = true
                     };
                     Process.Start(psi);
 
-                    // ¹Ø±Õ´°¿Ú
+                    // å…³é—­çª—å£
                     this.Close();
                 }
                 else
                 {
-                    MessageBox.Show("URLÎª¿Õ£¬ÎŞ·¨´ò¿ªÍøÒ³¡£");
+                    MessageBox.Show("URLä¸ºç©ºï¼Œæ— æ³•æ‰“å¼€ç½‘é¡µã€‚");
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show("ÎŞ·¨´ò¿ªÍøÒ³: " + ex.Message);
+                MessageBox.Show("æ— æ³•æ‰“å¼€ç½‘é¡µ: " + ex.Message);
             }
         }
 
         private void button2_Click(object sender, EventArgs e)
         {
-            // ¹Ø±Õ´°¿Ú
+            // å…³é—­çª—å£
             this.Close();
         }
 
