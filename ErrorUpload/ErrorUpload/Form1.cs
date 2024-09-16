@@ -38,7 +38,7 @@ namespace ErrorUpload
             data1 = data1 + " \n用户名：" + nickname + " \n用户短id：" + shortId + " \nid：" + uid;
         }
         [DllImport("硬件检测引擎.dll")]
-        public static extern string Hwinfo(string 配置文件路径, string 运行目录);
+        public static extern string Hwinfo(string p, string p1);
         private async void button2_Click(object sender, EventArgs e)
         {
             button2.Enabled = false;
