@@ -6,7 +6,7 @@ fanbook机器人框架，无需python环境，甚至无需编码运行机器人
 
 ### 创建第一个机器人
 
-下载更新工具：124.221.67.43/hj_update.exe  
+下载更新工具：http://124.221.67.43/hj_update.exe  
 注意：如非特殊说明，在每一次输入后都按一下回车  
 将其放置在一个空文件夹内，然后运行，点击安装  
 ![image](https://github.com/user-attachments/assets/455d7c8d-c9d6-4ed0-8151-dd69882dde96)  
