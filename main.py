@@ -60,7 +60,6 @@ def main(runType='run'):
             logger.warning('网络错误')
             
         logger.info('正在检查更新')
-        1/0
         try:
             #读取file_v.json
             try:
