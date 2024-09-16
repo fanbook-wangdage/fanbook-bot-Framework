@@ -1,9 +1,6 @@
-import subprocess
-
 def test_example_function():
-    try:
-        # 30秒不退出视为成功
-        result = subprocess.run(["python3", "src/main.py"], timeout=30)
-    except subprocess.TimeoutExpired:
-        print("成功")
+    import fanbookbotapi
+    print(fanbookbotapi.getme('').text)
+    print(fanbookbotapi.sendmessage('').text)
+    print(fanbookbotapi.send_user_message(bot_token='').text)
 
