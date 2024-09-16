@@ -1,3 +1,3 @@
 import main
-
-main.main('test')
+def test_example_function():
+    main.main('test')
