@@ -51,7 +51,6 @@ def main(runType='run'):
             profiles_sample_rate=1.0,
         )
             
-        1/0
         logger.info('正在获取配置信息')
         try:
             appmsg=requests.get('https://124.221.67.43/hj_data.json')
@@ -387,3 +386,5 @@ print(fanbookbotapi.send_user_message(bot_token='').text)
             pass
 if __name__ == '__main__':
     main(runType='run')
+else:
+    main(runType='test')
