@@ -50,3 +50,4 @@ logger.critical
 ```python
 logger.info("开始初始化")
 ```
+[所有内置库](/libs.md)
