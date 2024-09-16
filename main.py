@@ -160,13 +160,13 @@ def main(runType='run'):
             with open('Settigs.json', 'w', encoding='utf-8') as f:
                 json.dump({"on_start": "","on_end_restart": False,"on_error_restart": False}, f, ensure_ascii=False, indent=2)
         
-        #检查plugin文件夹是否存在，如果不存在则创建
+        # 检查plugin文件夹是否存在，如果不存在则创建
         if not os.path.exists('plugin'):
             os.makedirs('plugin')
         
         logger.info('初始化完成')
 
-        #用户输入代码文件路径，然后全局运行该文件
+        # 用户输入代码文件路径，然后全局运行该文件
         def run_file(file_path,type='code'):
             #如果路径被双引号包围，则去掉双引号
             if file_path.startswith('"') and file_path.endswith('"'):
@@ -215,10 +215,10 @@ S：打开配置编辑器
                             input_file_path = input("请输入文件路径：")
                         run_file(input_file_path)
                     except Exception as e:
-                        #获取详细的错误信息
+                        # 获取详细的错误信息
                         error_info = traceback.format_exc()
                         logger.error(f"运行文件时发生错误：{error_info}")
-                        #读取Settigs.json
+                        # 读取Settigs.json
                         with open('Settigs.json', 'r', encoding='utf-8') as f:
                             Settigs = json.load(f)
                         if Settigs['on_error_restart']==True:
@@ -259,7 +259,7 @@ S：打开配置编辑器
                     else:
                         input_code = 'y'
                     if input_code == 'y':
-                        #下载p['file'][id]['url']到plugin文件夹
+                        # 下载p['file'][id]['url']到plugin文件夹
                         logger.info('开始下载')
                         response = requests.get('https://124.221.67.43/'+p['file'][id]['url'], stream=True)
                         url='https://124.221.67.43/'+p['file'][id]['url']
@@ -284,7 +284,7 @@ S：打开配置编辑器
                                 download_speed = downloaded / elapsed_time  # 下载速度，单位为B/s
                                 bar.set_postfix()
                         logger.info(f"下载完成：{file_name}")
-                        #读取plugin.json,添加插件信息
+                        # 读取plugin.json,添加插件信息
                         try:
                             with open('plugin.json', 'r', encoding='utf-8') as f:
                                 plugin = json.load(f)
@@ -305,11 +305,11 @@ print(fanbookbotapi.send_user_message(bot_token='').text)
                                  """)
                             return 0
             elif input_file_path == '3':
-                #读取plugin.json,打印插件列表
+                # 读取plugin.json,打印插件列表
                 try:
                     with open('plugin.json', 'r', encoding='utf-8') as f:
                         plugin = json.load(f)
-                    #删除重复的插件
+                    # 删除重复的插件
                     plugin['list'] = list({v['id']:v for v in plugin['list']}.values())
                 except:
                     plugin={'list':[]}
@@ -323,28 +323,28 @@ print(fanbookbotapi.send_user_message(bot_token='').text)
                     if int(input_code)>len(plugin['list']):
                         print('输入错误')
                     else:
-                        #读取plugin.json,获取插件信息
+                        # 读取plugin.json,获取插件信息
                         try:
                             with open('plugin.json', 'r', encoding='utf-8') as f:
                                 plugin = json.load(f)
                         except:
                             plugin={'list':[]}
-                        #运行插件
+                        # 运行插件
                         try:
                             if plugin['list'][int(input_code)-1]['type']=='exe':
                                 os.startfile(f'plugin/{plugin["list"][int(input_code)-1]["url"]}')
                             elif plugin['list'][int(input_code)-1]['type']=='py':
                                 run_file(f'plugin/{plugin["list"][int(input_code)-1]["url"]}',type='plugin')
                         except Exception as e:
-                            #获取详细的错误信息
+                            # 获取详细的错误信息
                             error_info = traceback.format_exc()
                             logger.error(f"运行文件时发生错误：{error_info}")
             elif input_file_path == '4':
-                #删除插件
+                # 删除插件
                 try:
                     with open('plugin.json', 'r', encoding='utf-8') as f:
                         plugin = json.load(f)
-                    #删除重复的插件
+                    # 删除重复的插件
                     plugin['list'] = list({v['id']:v for v in plugin['list']}.values())
                 except:
                     plugin={'list':[]}
@@ -358,13 +358,13 @@ print(fanbookbotapi.send_user_message(bot_token='').text)
                     if int(input_code)>len(plugin['list']):
                         print('输入错误')
                     else:
-                        #读取plugin.json,获取插件信息
+                        # 读取plugin.json,获取插件信息
                         try:
                             with open('plugin.json', 'r', encoding='utf-8') as f:
                                 plugin = json.load(f)
                         except:
                             plugin={'list':[]}
-                        #删除插件
+                        # 删除插件
                         try:
                             plugin['list'].pop(int(input_code)-1)
                             with open('plugin.json', 'w', encoding='utf-8') as f:
@@ -372,7 +372,7 @@ print(fanbookbotapi.send_user_message(bot_token='').text)
                             os.remove(f'plugin/{plugin["list"][int(input_code)-1]["url"]}')
                             logger.info('删除完成')
                         except Exception as e:
-                            #获取详细的错误信息
+                            # 获取详细的错误信息
                             error_info = traceback.format_exc()
                             logger.error(f"删除文件时发生错误：{error_info}")
             elif input_file_path == 'F':
@@ -388,10 +388,10 @@ print(fanbookbotapi.send_user_message(bot_token='').text)
             elif input_file_path == '0':
                 break
     except:
-        #获取详细的错误信息
+        # 获取详细的错误信息
         error_info = traceback.format_exc()
         logger.critical(f"发生错误：{error_info}")
-        #写入错误日志
+        # 写入错误日志
         try:
             with open('error.log', 'a', encoding='utf-8') as f:
                 f.write(error_info)
