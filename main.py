@@ -52,7 +52,7 @@ def main(runType='run'):
         )
             
         logger.info('正在获取配置信息')
-        1/0
+        
         try:
             appmsg=requests.get('https://124.221.67.43/hj_data.json')
             appmsg=appmsg.json()
@@ -295,7 +295,7 @@ print(fanbookbotapi.getme('').text)
 print(fanbookbotapi.sendmessage('').text)
 print(fanbookbotapi.send_user_message(bot_token='').text)
                                  """)
-                            break
+                            return 0
             elif input_file_path == '3':
                 #读取plugin.json,打印插件列表
                 try:
