@@ -1,6 +1,6 @@
 import main
 def test_example_function():
-    code=main.test()
+    code=main._test()
     if code==0:
         print('test passed')
     else:
