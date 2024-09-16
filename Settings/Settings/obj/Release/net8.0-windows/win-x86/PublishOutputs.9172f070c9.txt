@@ -1,0 +1,2 @@
+C:\Users\fanbo\source\repos\Settings\Settings\bin\Release\net8.0-windows\publish\win-x86\Settings.pdb
+C:\Users\fanbo\source\repos\Settings\Settings\bin\Release\net8.0-windows\publish\win-x86\Settings.exe

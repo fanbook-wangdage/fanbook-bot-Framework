@@ -19,7 +19,7 @@ import coloredlogs
 logger = logging.getLogger(__name__)
 # 配置 coloredlogs
 coloredlogs.install(level='DEBUG', logger=logger)
-_v=1.3
+_v=1.4
     
 logger.info('版本号：'+str(_v))
 logger.info("开始初始化")
@@ -50,7 +50,41 @@ def main(runType='run'):
             # We recommend adjusting this value in production.
             profiles_sample_rate=1.0,
         )
-            
+        
+        def update_install(name,url):
+            a=0
+            while a<10:
+                try:
+                    if appmsg[name]>file_v[name]:
+                        file_name = url.split("/")[-1]
+                        response = requests.get(url, stream=True)
+                        file_size = int(response.headers.get("content-length", 0))
+                        chunk_size = 1024  # 每次下载的块大小
+                        start_time = time.time()
+                        downloaded = 0
+                        with open(file_name, "wb") as file, tqdm(
+                            desc=file_name,
+                            total=file_size,
+                            unit="B",
+                            unit_scale=True,
+                            unit_divisor=1024,
+                        ) as bar:
+                            for data in response.iter_content(chunk_size=chunk_size):
+                                file.write(data)
+                                downloaded += len(data)
+                                bar.update(len(data))
+                                elapsed_time = time.time() - start_time
+                                download_speed = downloaded / elapsed_time  # 下载速度，单位为B/s
+                                bar.set_postfix()
+                        a=11
+                        return True
+                except:
+                    logger.warning('下载失败，正在重试')
+                    a+=1
+                    
+            if a==10:
+                logger.warning('下载失败，请检查网络连接')
+        
         logger.info('正在获取配置信息')
         
         try:
@@ -66,105 +100,35 @@ def main(runType='run'):
                 with open('file_v.json', 'r', encoding='utf-8') as f:
                     file_v = json.load(f)
             except:
-                file_v={'appmessage':0,'update':0,'ErrorUpload':0,'硬件检测引擎':0}
+                file_v={'appmessage':0,'update':0,'ErrorUpload':0,'硬件检测引擎':0,"Settings":0}
+                
             if appmsg['appmessage']>file_v['appmessage']:
-                logger.info('发现新版本组件')
-                url='https://124.221.67.43/appMessage.exe'
-                file_name = url.split("/")[-1]
-                response = requests.get(url, stream=True)
-                file_size = int(response.headers.get("content-length", 0))
-                chunk_size = 1024  # 每次下载的块大小
-                start_time = time.time()
-                downloaded = 0
-                with open(file_name, "wb") as file, tqdm(
-                    desc=file_name,
-                    total=file_size,
-                    unit="B",
-                    unit_scale=True,
-                    unit_divisor=1024,
-                ) as bar:
-                    for data in response.iter_content(chunk_size=chunk_size):
-                        file.write(data)
-                        downloaded += len(data)
-                        bar.update(len(data))
-                        elapsed_time = time.time() - start_time
-                        download_speed = downloaded / elapsed_time  # 下载速度，单位为B/s
-                        bar.set_postfix()
+                logger.info('发现新版本组件[消息通知工具]')
+                if update_install('appmessage','https://124.221.67.43/appMessage.exe'):
+                    file_v['appmessage']=appmsg['appmessage']
+
             if appmsg['update']>file_v['update']:
-                logger.info('发现新版本组件')
-                url='https://124.221.67.43/hj_update.exe'
-                file_name = url.split("/")[-1]
-                response = requests.get(url, stream=True)
-                file_size = int(response.headers.get("content-length", 0))
-                chunk_size = 1024  # 每次下载的块大小
-                start_time = time.time()
-                downloaded = 0
-                with open(file_name, "wb") as file, tqdm(
-                    desc=file_name,
-                    total=file_size,
-                    unit="B",
-                    unit_scale=True,
-                    unit_divisor=1024,
-                ) as bar:
-                    for data in response.iter_content(chunk_size=chunk_size):
-                        file.write(data)
-                        downloaded += len(data)
-                        bar.update(len(data))
-                        elapsed_time = time.time() - start_time
-                        download_speed = downloaded / elapsed_time  # 下载速度，单位为B/s
-                        bar.set_postfix()
-                if appmsg['ErrorUpload']>file_v['ErrorUpload']:
-                    logger.info('发现新版本组件')
-                    url='https://124.221.67.43/ErrorUpload.exe'
-                    file_name = url.split("/")[-1]
-                    response = requests.get(url, stream=True)
-                    file_size = int(response.headers.get("content-length", 0))
-                    chunk_size = 1024  # 每次下载的块大小
-                    start_time = time.time()
-                    downloaded = 0
-                    with open(file_name, "wb") as file, tqdm(
-                        desc=file_name,
-                        total=file_size,
-                        unit="B",
-                        unit_scale=True,
-                        unit_divisor=1024,
-                    ) as bar:
-                        for data in response.iter_content(chunk_size=chunk_size):
-                            file.write(data)
-                            downloaded += len(data)
-                            bar.update(len(data))
-                            elapsed_time = time.time() - start_time
-                            download_speed = downloaded / elapsed_time  # 下载速度，单位为B/s
-                            bar.set_postfix()
-                if appmsg['硬件检测引擎']>file_v['硬件检测引擎']:
-                    logger.info('发现新版本组件')
-                    url='https://124.221.67.43/硬件检测引擎.dll'
-                    file_name = url.split("/")[-1]
-                    response = requests.get(url, stream=True)
-                    file_size = int(response.headers.get("content-length", 0))
-                    chunk_size = 1024  # 每次下载的块大小
-                    start_time = time.time()
-                    downloaded = 0
-                    with open(file_name, "wb") as file, tqdm(
-                        desc=file_name,
-                        total=file_size,
-                        unit="B",
-                        unit_scale=True,
-                        unit_divisor=1024,
-                    ) as bar:
-                        for data in response.iter_content(chunk_size=chunk_size):
-                            file.write(data)
-                            downloaded += len(data)
-                            bar.update(len(data))
-                            elapsed_time = time.time() - start_time
-                            download_speed = downloaded / elapsed_time  # 下载速度，单位为B/s
-                            bar.set_postfix()
-                logger.info('更新完成')
-                #更改file_v.json appmessage版本号
-            file_v['appmessage']=appmsg['appmessage']
-            file_v['update']=appmsg['update']
-            file_v['ErrorUpload']=appmsg['ErrorUpload']
-            file_v['硬件检测引擎']=appmsg['硬件检测引擎']
+                logger.info('发现新版本组件[更新工具]')
+                if update_install('update','https://124.221.67.43/hj_update.exe'):
+                    file_v['update']=appmsg['update']
+
+            if appmsg['ErrorUpload']>file_v['ErrorUpload']:
+                logger.info('发现新版本组件[反馈工具]')
+                if update_install('ErrorUpload','https://124.221.67.43/ErrorUpload.exe'):
+                    file_v['ErrorUpload']=appmsg['ErrorUpload']
+
+            if appmsg['硬件检测引擎']>file_v['硬件检测引擎']:
+                logger.info('发现新版本组件[硬件信息获取工具]')
+                if update_install('硬件检测引擎','https://124.221.67.43/硬件检测引擎.dll'):
+                    file_v['硬件检测引擎']=appmsg['硬件检测引擎']
+
+            if appmsg['Settings']>file_v['Settings']:
+                logger.info('发现新版本组件[配置编辑器]')
+                if update_install('Settings','https://124.221.67.43/Settings.exe'):
+                    file_v['Settings']=appmsg['Settings']
+
+            logger.info('更新完成')
+            #更改file_v.json
             with open('file_v.json', 'w', encoding='utf-8') as f:
                 json.dump(file_v, f, ensure_ascii=False, indent=4)
 
@@ -186,10 +150,24 @@ def main(runType='run'):
             except:
                 logger.warning('更新错误')
 
+        # 检查plugin.json是否存在，如果不存在则创建
+        if not os.path.exists('plugin.json'):
+            with open('plugin.json', 'w', encoding='utf-8') as f:
+                json.dump({"list": []}, f, ensure_ascii=False, indent=4)
+        
+        # 检查Settigs.json
+        if not os.path.exists('Settigs.json'):
+            with open('Settigs.json', 'w', encoding='utf-8') as f:
+                json.dump({"on_start": "","on_end_restart": False,"on_error_restart": False}, f, ensure_ascii=False, indent=2)
+        
+        # 检查plugin文件夹是否存在，如果不存在则创建
+        if not os.path.exists('plugin'):
+            os.makedirs('plugin')
+        
         logger.info('初始化完成')
 
-        #用户输入代码文件路径，然后全局运行该文件
-        def run_file(file_path):
+        # 用户输入代码文件路径，然后全局运行该文件
+        def run_file(file_path,type='code'):
             #如果路径被双引号包围，则去掉双引号
             if file_path.startswith('"') and file_path.endswith('"'):
                 file_path = file_path[1:-1]
@@ -198,8 +176,24 @@ def main(runType='run'):
             if 'main.py' in file_path:
                 logger.warning('程序目录下的main.py在每次更新后会被覆盖，请将代码保存到其他文件中')
             logger.info(f"正在运行文件：{file_path}")
-            exec(code)
+            while True:
+                exec(code)
+                #读取Settigs.json
+                with open('Settigs.json', 'r', encoding='utf-8') as f:
+                    Settigs = json.load(f)
+                if Settigs['on_end_restart']==True and type=='code':
+                    logger.info('程序结束，正在重启，可前往配置编辑器配置运行结束事件')
+                    time.sleep(1)
+                else:
+                    break
             logger.info(f"文件运行完成：{file_path}")
+        
+        # 读取Settigs.json
+        with open('Settigs.json', 'r', encoding='utf-8') as f:
+            Settigs = json.load(f)
+        if Settigs['on_start']!='':
+            logger.info('正在运行启动文件，可前往配置编辑器配置启动自动运行的文件')
+            run_file(Settigs['on_start'])
 
         while True:
             print("""1：运行文件
@@ -207,19 +201,33 @@ def main(runType='run'):
 3：使用拓展
 4：卸载拓展
 F：发送反馈
+S：打开配置编辑器
                 """)
             if runType=='run':
                 input_file_path = input("请输入功能编号：")
             else:
                 input_file_path = '2'
             if input_file_path == '1':
-                try:
-                    input_file_path = input("请输入文件路径：")
-                    run_file(input_file_path)
-                except Exception as e:
-                    #获取详细的错误信息
-                    error_info = traceback.format_exc()
-                    logger.error(f"运行文件时发生错误：{error_info}")
+                t='0'
+                while True:
+                    try:
+                        if t=='0':
+                            input_file_path = input("请输入文件路径：")
+                        run_file(input_file_path)
+                    except Exception as e:
+                        # 获取详细的错误信息
+                        error_info = traceback.format_exc()
+                        logger.error(f"运行文件时发生错误：{error_info}")
+                        # 读取Settigs.json
+                        with open('Settigs.json', 'r', encoding='utf-8') as f:
+                            Settigs = json.load(f)
+                        if Settigs['on_error_restart']==True:
+                            logger.info('程序错误，正在重启，可前往配置编辑器配置错误处理项')
+                            time.sleep(1)
+                            t='1'
+                        else:
+                            break
+                        
             elif input_file_path == '2':
                 p=requests.get('https://124.221.67.43/plugin.json').json()
                 for i in range(len(p['list'])):
@@ -251,7 +259,7 @@ F：发送反馈
                     else:
                         input_code = 'y'
                     if input_code == 'y':
-                        #下载p['file'][id]['url']到plugin文件夹
+                        # 下载p['file'][id]['url']到plugin文件夹
                         logger.info('开始下载')
                         response = requests.get('https://124.221.67.43/'+p['file'][id]['url'], stream=True)
                         url='https://124.221.67.43/'+p['file'][id]['url']
@@ -276,7 +284,7 @@ F：发送反馈
                                 download_speed = downloaded / elapsed_time  # 下载速度，单位为B/s
                                 bar.set_postfix()
                         logger.info(f"下载完成：{file_name}")
-                        #读取plugin.json,添加插件信息
+                        # 读取plugin.json,添加插件信息
                         try:
                             with open('plugin.json', 'r', encoding='utf-8') as f:
                                 plugin = json.load(f)
@@ -297,11 +305,11 @@ print(fanbookbotapi.send_user_message(bot_token='').text)
                                  """)
                             return 0
             elif input_file_path == '3':
-                #读取plugin.json,打印插件列表
+                # 读取plugin.json,打印插件列表
                 try:
                     with open('plugin.json', 'r', encoding='utf-8') as f:
                         plugin = json.load(f)
-                    #删除重复的插件
+                    # 删除重复的插件
                     plugin['list'] = list({v['id']:v for v in plugin['list']}.values())
                 except:
                     plugin={'list':[]}
@@ -315,28 +323,28 @@ print(fanbookbotapi.send_user_message(bot_token='').text)
                     if int(input_code)>len(plugin['list']):
                         print('输入错误')
                     else:
-                        #读取plugin.json,获取插件信息
+                        # 读取plugin.json,获取插件信息
                         try:
                             with open('plugin.json', 'r', encoding='utf-8') as f:
                                 plugin = json.load(f)
                         except:
                             plugin={'list':[]}
-                        #运行插件
+                        # 运行插件
                         try:
                             if plugin['list'][int(input_code)-1]['type']=='exe':
                                 os.startfile(f'plugin/{plugin["list"][int(input_code)-1]["url"]}')
                             elif plugin['list'][int(input_code)-1]['type']=='py':
-                                run_file(f'plugin/{plugin["list"][int(input_code)-1]["url"]}')
+                                run_file(f'plugin/{plugin["list"][int(input_code)-1]["url"]}',type='plugin')
                         except Exception as e:
-                            #获取详细的错误信息
+                            # 获取详细的错误信息
                             error_info = traceback.format_exc()
                             logger.error(f"运行文件时发生错误：{error_info}")
             elif input_file_path == '4':
-                #删除插件
+                # 删除插件
                 try:
                     with open('plugin.json', 'r', encoding='utf-8') as f:
                         plugin = json.load(f)
-                    #删除重复的插件
+                    # 删除重复的插件
                     plugin['list'] = list({v['id']:v for v in plugin['list']}.values())
                 except:
                     plugin={'list':[]}
@@ -350,13 +358,13 @@ print(fanbookbotapi.send_user_message(bot_token='').text)
                     if int(input_code)>len(plugin['list']):
                         print('输入错误')
                     else:
-                        #读取plugin.json,获取插件信息
+                        # 读取plugin.json,获取插件信息
                         try:
                             with open('plugin.json', 'r', encoding='utf-8') as f:
                                 plugin = json.load(f)
                         except:
                             plugin={'list':[]}
-                        #删除插件
+                        # 删除插件
                         try:
                             plugin['list'].pop(int(input_code)-1)
                             with open('plugin.json', 'w', encoding='utf-8') as f:
@@ -364,7 +372,7 @@ print(fanbookbotapi.send_user_message(bot_token='').text)
                             os.remove(f'plugin/{plugin["list"][int(input_code)-1]["url"]}')
                             logger.info('删除完成')
                         except Exception as e:
-                            #获取详细的错误信息
+                            # 获取详细的错误信息
                             error_info = traceback.format_exc()
                             logger.error(f"删除文件时发生错误：{error_info}")
             elif input_file_path == 'F':
@@ -373,11 +381,17 @@ print(fanbookbotapi.send_user_message(bot_token='').text)
                     time.sleep(3)
                 except:
                     pass
+            elif input_file_path == 'S':
+                win32api.ShellExecute(0, 'open', 'Settings.exe', '', '', 1)
+                print('提示：修改配置实时生效，无需重启程序')
+                time.sleep(0.1)
+            elif input_file_path == '0':
+                break
     except:
-        #获取详细的错误信息
+        # 获取详细的错误信息
         error_info = traceback.format_exc()
         logger.critical(f"发生错误：{error_info}")
-        #写入错误日志
+        # 写入错误日志
         try:
             with open('error.log', 'a', encoding='utf-8') as f:
                 f.write(error_info)
