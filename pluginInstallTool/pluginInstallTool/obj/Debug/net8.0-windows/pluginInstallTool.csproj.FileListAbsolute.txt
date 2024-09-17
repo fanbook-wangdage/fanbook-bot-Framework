@@ -14,3 +14,7 @@ C:\Users\fanbo\source\repos\pluginInstallTool\pluginInstallTool\obj\Debug\net8.0
 C:\Users\fanbo\source\repos\pluginInstallTool\pluginInstallTool\obj\Debug\net8.0-windows\pluginInstallTool.pdb
 C:\Users\fanbo\source\repos\pluginInstallTool\pluginInstallTool\obj\Debug\net8.0-windows\pluginInstallTool.genruntimeconfig.cache
 C:\Users\fanbo\source\repos\pluginInstallTool\pluginInstallTool\obj\Debug\net8.0-windows\ref\pluginInstallTool.dll
+C:\Users\fanbo\source\repos\pluginInstallTool\pluginInstallTool\obj\Debug\net8.0-windows\pluginInstallTool.Properties.Resources.resources
+C:\Users\fanbo\source\repos\pluginInstallTool\pluginInstallTool\bin\Debug\net8.0-windows\Newtonsoft.Json.dll
+C:\Users\fanbo\source\repos\pluginInstallTool\pluginInstallTool\obj\Debug\net8.0-windows\pluginInstallTool.csproj.AssemblyReference.cache
+C:\Users\fanbo\source\repos\pluginInstallTool\pluginInstallTool\obj\Debug\net8.0-windows\pluginIn.A415FFEF.Up2Date
