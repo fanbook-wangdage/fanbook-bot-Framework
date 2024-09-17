@@ -47,6 +47,7 @@
             pictureBox1 = new PictureBox();
             label4 = new Label();
             label3 = new Label();
+            label14 = new Label();
             panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             SuspendLayout();
@@ -65,7 +66,7 @@
             // label1
             // 
             label1.AutoSize = true;
-            label1.Location = new Point(141, 203);
+            label1.Location = new Point(141, 191);
             label1.Name = "label1";
             label1.Size = new Size(152, 17);
             label1.TabIndex = 1;
@@ -84,6 +85,7 @@
             button1.TabIndex = 2;
             button1.Text = "退出";
             button1.UseVisualStyleBackColor = false;
+            button1.Click += button1_Click;
             // 
             // button2
             // 
@@ -98,6 +100,7 @@
             button2.TabIndex = 3;
             button2.Text = "安装";
             button2.UseVisualStyleBackColor = false;
+            button2.Click += button2_Click;
             // 
             // label2
             // 
@@ -223,7 +226,7 @@
             pictureBox1.Image = (Image)resources.GetObject("pictureBox1.Image");
             pictureBox1.Location = new Point(323, 3);
             pictureBox1.Name = "pictureBox1";
-            pictureBox1.Size = new Size(37, 31);
+            pictureBox1.Size = new Size(37, 37);
             pictureBox1.SizeMode = PictureBoxSizeMode.StretchImage;
             pictureBox1.TabIndex = 2;
             pictureBox1.TabStop = false;
@@ -247,12 +250,22 @@
             label3.TabIndex = 0;
             label3.Text = "插件名";
             // 
+            // label14
+            // 
+            label14.AutoSize = true;
+            label14.Location = new Point(141, 209);
+            label14.Name = "label14";
+            label14.Size = new Size(25, 17);
+            label14.TabIndex = 6;
+            label14.Text = "1.0";
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 17F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = SystemColors.Control;
             ClientSize = new Size(800, 229);
+            Controls.Add(label14);
             Controls.Add(panel1);
             Controls.Add(label2);
             Controls.Add(button2);
@@ -289,5 +302,6 @@
         private Label label13;
         private Label label12;
         private Label label5;
+        private Label label14;
     }
 }
