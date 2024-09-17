@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "dgSpecHash": "8vu9b4bwMPM=",
+  "success": true,
+  "projectFilePath": "C:\\Users\\fanbo\\source\\repos\\Settings\\Settings\\Settings.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\fanbo\\.nuget\\packages\\microsoft.net.illink.tasks\\8.0.8\\microsoft.net.illink.tasks.8.0.8.nupkg.sha512",
+    "C:\\Users\\fanbo\\.nuget\\packages\\newtonsoft.json\\13.0.3\\newtonsoft.json.13.0.3.nupkg.sha512"
+  ],
+  "logs": []
+}
