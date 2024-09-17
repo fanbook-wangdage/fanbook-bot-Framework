@@ -407,7 +407,7 @@ print(fanbookbotapi.send_user_message(bot_token='').text)
                             plugin={'List':[]}
                         # 删除插件
                         try:
-                            os.remove(f'plugin/{plugin["List"][int(input_code)-1]['File']["Url"].split("/")[-1]}')
+                            os.remove(f'plugin/{plugin["List"][int(input_code)-1]["File"]["Url"].split("/")[-1]}')
                             plugin['List'].pop(int(input_code)-1)
                             with open('plugin.json', 'w', encoding='utf-8') as f:
                                 json.dump(plugin, f, ensure_ascii=False, indent=4)
