@@ -100,7 +100,7 @@ def main(runType='run'):
                 with open('file_v.json', 'r', encoding='utf-8') as f:
                     file_v = json.load(f)
             except:
-                file_v={'appmessage':0,'update':0,'ErrorUpload':0,'硬件检测引擎':0,"Settings":0}
+                file_v={'appmessage':0,'update':0,'ErrorUpload':0,'硬件检测引擎':0,"Settings":0,"pluginInstallTool":0}
                 
             if appmsg['appmessage']>file_v['appmessage']:
                 logger.info('发现新版本组件[消息通知工具]')
@@ -126,6 +126,11 @@ def main(runType='run'):
                 logger.info('发现新版本组件[配置编辑器]')
                 if update_install('Settings','https://124.221.67.43/Settings.exe'):
                     file_v['Settings']=appmsg['Settings']
+                    
+            if appmsg['pluginInstallTool']>file_v['pluginInstallTool']:
+                logger.info('发现新版本组件[插件安装工具]')
+                if update_install('pluginInstallTool','https://124.221.67.43/pluginInstallTool.exe'):
+                    file_v['pluginInstallTool']=appmsg['pluginInstallTool']
 
             logger.info('更新完成')
             #更改file_v.json
