@@ -19,7 +19,7 @@ import coloredlogs
 logger = logging.getLogger(__name__)
 # 配置 coloredlogs
 coloredlogs.install(level='DEBUG', logger=logger)
-_v=1.4
+_v=1.5
     
 logger.info('版本号：'+str(_v))
 logger.info("开始初始化")
@@ -153,16 +153,31 @@ def main(runType='run'):
         # 检查plugin.json是否存在，如果不存在则创建
         if not os.path.exists('plugin.json'):
             with open('plugin.json', 'w', encoding='utf-8') as f:
-                json.dump({"list": []}, f, ensure_ascii=False, indent=4)
+                json.dump({"List": []}, f, ensure_ascii=False, indent=4)
         
-        # 检查Settigs.json
-        if not os.path.exists('Settigs.json'):
-            with open('Settigs.json', 'w', encoding='utf-8') as f:
-                json.dump({"on_start": "","on_end_restart": False,"on_error_restart": False}, f, ensure_ascii=False, indent=2)
+        tempjson={
+            "on_start" : "",
+            "on_end_restart" : False,
+            "on_error_restart" : False,
+            "on_end_restart_time":5,
+            "on_err_restart_time":5,
+            "on_end_restart_log":"运行完成",
+            "on_end_restart_out_to_file":False,
+            "on_errror_log":True
+        }
+        
+        # 检查Settings.json
+        if not os.path.exists('Settings.json'):
+            with open('Settings.json', 'w', encoding='utf-8') as f:
+                json.dump(tempjson, f, ensure_ascii=False, indent=2)
         
         # 检查plugin文件夹是否存在，如果不存在则创建
         if not os.path.exists('plugin'):
             os.makedirs('plugin')
+        
+        def get_settings():
+            with open('Settings.json', 'r', encoding='utf-8') as f:
+                return json.load(f)
         
         logger.info('初始化完成')
 
@@ -178,22 +193,47 @@ def main(runType='run'):
             logger.info(f"正在运行文件：{file_path}")
             while True:
                 exec(code)
-                #读取Settigs.json
-                with open('Settigs.json', 'r', encoding='utf-8') as f:
-                    Settigs = json.load(f)
+                #读取Settings.json
+                Settigs = get_settings()
                 if Settigs['on_end_restart']==True and type=='code':
                     logger.info('程序结束，正在重启，可前往配置编辑器配置运行结束事件')
-                    time.sleep(1)
+                    if Settigs['on_end_restart_out_to_file']==True:
+                        #写入日志
+                        with open('runLog.txt', 'a', encoding='utf-8') as f:
+                            f.write(time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())+'\n')
+                            f.write(Settigs['on_end_restart_log']+'\n\n')
+                    time.sleep(Settigs['on_end_restart_time'])
                 else:
                     break
             logger.info(f"文件运行完成：{file_path}")
         
-        # 读取Settigs.json
-        with open('Settigs.json', 'r', encoding='utf-8') as f:
+        # 读取Settings.json
+        with open('Settings.json', 'r', encoding='utf-8') as f:
             Settigs = json.load(f)
+        t='0'
         if Settigs['on_start']!='':
-            logger.info('正在运行启动文件，可前往配置编辑器配置启动自动运行的文件')
-            run_file(Settigs['on_start'])
+            while True:
+                try:
+                    logger.info('正在运行启动文件，可前往配置编辑器配置启动自动运行的文件')
+                    run_file(Settigs['on_start'])
+                except Exception as e:
+                    # 获取详细的错误信息
+                    error_info = traceback.format_exc()
+                    logger.error(f"运行文件时发生错误：{error_info}")
+                    # 读取Settings.json
+                    Settigs = get_settings()
+                    if Settigs['on_error_restart']==True:
+                        logger.info('程序错误，正在重启，可前往配置编辑器配置错误处理项')
+                        if Settigs['on_errror_log']==True:
+                            #写入日志
+                            with open('runLog.txt', 'a', encoding='utf-8') as f:
+                                #写入时间
+                                f.write(time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())+'\n')
+                                f.write('运行文件时出错\n'+error_info+'\n\n')
+                        time.sleep(Settigs['on_err_restart_time'])
+                        t='1'
+                    else:
+                        break
 
         while True:
             print("""1：运行文件
@@ -218,109 +258,110 @@ S：打开配置编辑器
                         # 获取详细的错误信息
                         error_info = traceback.format_exc()
                         logger.error(f"运行文件时发生错误：{error_info}")
-                        # 读取Settigs.json
-                        with open('Settigs.json', 'r', encoding='utf-8') as f:
-                            Settigs = json.load(f)
+                        # 读取Settings.json
+                        Settigs = get_settings()
                         if Settigs['on_error_restart']==True:
                             logger.info('程序错误，正在重启，可前往配置编辑器配置错误处理项')
-                            time.sleep(1)
+                            time.sleep(Settigs['on_err_restart_time'])
                             t='1'
                         else:
                             break
                         
             elif input_file_path == '2':
-                p=requests.get('https://124.221.67.43/plugin.json').json()
-                for i in range(len(p['list'])):
-                    print(i+1,'：',p['list'][i])
-                print('请输入要查看的拓展编号')
+                try:
+                    win32api.ShellExecute(0, 'open', 'pluginInstallTool.exe', '', '', 1)
+                except Exception as e:
+                    logger.error(f"打开插件安装工具时发生错误：{e}")
+                # p=requests.get('https://124.221.67.43/plugin.json').json()
+                # for i in range(len(p['list'])):
+                #     print(i+1,'：',p['list'][i])
+                # print('请输入要查看的拓展编号')
+                # if runType=='run':
+                #     input_code = input("")
+                # else:
+                #     input_code = '1'
+                # if int(input_code)>len(p['list']):
+                #     print('输入错误')
+                # else:
+                #     print('拓展信息：')
+                #     print('名称：',p['list'][int(input_code)-1])
+                #     print('版本：',p['version'][int(input_code)-1])
+                #     if p['file'][int(input_code)-1]['type']=='exe':
+                #         print('类型：单文件可执行程序(exe)')
+                #     elif p['file'][int(input_code)-1]['type']=='py':
+                #         print('类型：python脚本')
+                #     else:
+                #         print('未知类型：',p['file'][int(input_code)-1]['type'])
+                #     print('作者：',p['author'][int(input_code)-1])
+                #     print('简介：',p['info'][int(input_code)-1])
+                #     id=int(input_code)-1
+                #     print('')
+                #     print('是否安装？(y/n)')
+                #     if runType=='run':
+                #         input_code = input("")
+                #     else:
+                #         input_code = 'y'
+                #     if input_code == 'y':
+                #         # 下载p['file'][id]['url']到plugin文件夹
+                #         logger.info('开始下载')
+                #         response = requests.get('https://124.221.67.43/'+p['file'][id]['url'], stream=True)
+                #         url='https://124.221.67.43/'+p['file'][id]['url']
+                #         file_name = 'plugin/'+url.split("/")[-1]
+                #         response = requests.get(url, stream=True)
+                #         file_size = int(response.headers.get("content-length", 0))
+                #         chunk_size = 1024  # 每次下载的块大小
+                #         start_time = time.time()
+                #         downloaded = 0
+                #         with open(file_name, "wb") as file, tqdm(
+                #             desc=file_name,
+                #             total=file_size,
+                #             unit="B",
+                #             unit_scale=True,
+                #             unit_divisor=1024,
+                #         ) as bar:
+                #             for data in response.iter_content(chunk_size=chunk_size):
+                #                 file.write(data)
+                #                 downloaded += len(data)
+                #                 bar.update(len(data))
+                #                 elapsed_time = time.time() - start_time
+                #                 download_speed = downloaded / elapsed_time  # 下载速度，单位为B/s
+                #                 bar.set_postfix()
+                #         logger.info(f"下载完成：{file_name}")
+                #         # 读取plugin.json,添加插件信息
+                #         try:
+                #             with open('plugin.json', 'r', encoding='utf-8') as f:
+                #                 plugin = json.load(f)
+                #         except:
+                #             plugin={'list':[]}
+                #         plugin['list'].append({'name': p['list'][id], 'version': p['version'][id], 'type': p['file'][id]['type'], 'author': p['author'][id], 'info': p['info'][id], 'url': p['file'][id]['url'].split('/')[-1],'id': id})
+                #         with open('plugin.json', 'w', encoding='utf-8') as f:
+                #             json.dump(plugin, f, ensure_ascii=False, indent=4)
+                #         logger.info('安装完成')
                 if runType=='run':
-                    input_code = input("")
+                    pass
                 else:
-                    input_code = '1'
-                if int(input_code)>len(p['list']):
-                    print('输入错误')
-                else:
-                    print('拓展信息：')
-                    print('名称：',p['list'][int(input_code)-1])
-                    print('版本：',p['version'][int(input_code)-1])
-                    if p['file'][int(input_code)-1]['type']=='exe':
-                        print('类型：单文件可执行程序(exe)')
-                    elif p['file'][int(input_code)-1]['type']=='py':
-                        print('类型：python脚本')
-                    else:
-                        print('未知类型：',p['file'][int(input_code)-1]['type'])
-                    print('作者：',p['author'][int(input_code)-1])
-                    print('简介：',p['info'][int(input_code)-1])
-                    id=int(input_code)-1
-                    print('')
-                    print('是否安装？(y/n)')
-                    if runType=='run':
-                        input_code = input("")
-                    else:
-                        input_code = 'y'
-                    if input_code == 'y':
-                        # 下载p['file'][id]['url']到plugin文件夹
-                        logger.info('开始下载')
-                        response = requests.get('https://124.221.67.43/'+p['file'][id]['url'], stream=True)
-                        url='https://124.221.67.43/'+p['file'][id]['url']
-                        file_name = 'plugin/'+url.split("/")[-1]
-                        response = requests.get(url, stream=True)
-                        file_size = int(response.headers.get("content-length", 0))
-                        chunk_size = 1024  # 每次下载的块大小
-                        start_time = time.time()
-                        downloaded = 0
-                        with open(file_name, "wb") as file, tqdm(
-                            desc=file_name,
-                            total=file_size,
-                            unit="B",
-                            unit_scale=True,
-                            unit_divisor=1024,
-                        ) as bar:
-                            for data in response.iter_content(chunk_size=chunk_size):
-                                file.write(data)
-                                downloaded += len(data)
-                                bar.update(len(data))
-                                elapsed_time = time.time() - start_time
-                                download_speed = downloaded / elapsed_time  # 下载速度，单位为B/s
-                                bar.set_postfix()
-                        logger.info(f"下载完成：{file_name}")
-                        # 读取plugin.json,添加插件信息
-                        try:
-                            with open('plugin.json', 'r', encoding='utf-8') as f:
-                                plugin = json.load(f)
-                        except:
-                            plugin={'list':[]}
-                        plugin['list'].append({'name': p['list'][id], 'version': p['version'][id], 'type': p['file'][id]['type'], 'author': p['author'][id], 'info': p['info'][id], 'url': p['file'][id]['url'].split('/')[-1],'id': id})
-                        with open('plugin.json', 'w', encoding='utf-8') as f:
-                            json.dump(plugin, f, ensure_ascii=False, indent=4)
-                        logger.info('安装完成')
-                        if runType=='run':
-                            pass
-                        else:
-                            exec("""
+                    exec("""
 import fanbookbotapi
 print(fanbookbotapi.getme('').text)
 print(fanbookbotapi.sendmessage('').text)
 print(fanbookbotapi.send_user_message(bot_token='').text)
-                                 """)
-                            return 0
+""")
+                    return 0
             elif input_file_path == '3':
                 # 读取plugin.json,打印插件列表
                 try:
                     with open('plugin.json', 'r', encoding='utf-8') as f:
                         plugin = json.load(f)
-                    # 删除重复的插件
-                    plugin['list'] = list({v['id']:v for v in plugin['list']}.values())
                 except:
-                    plugin={'list':[]}
-                for i in range(len(plugin['list'])):
-                    print(i+1,'：',plugin['list'][i]['name'])
-                if len(plugin['list'])==0:
+                    plugin={'List':[]}
+                for i in range(len(plugin['List'])):
+                    print(i+1,'：',plugin['List'][i]['Name'])
+                if len(plugin['List'])==0:
                     print('没有安装任何插件')
                 else:
                     print('请输入要使用的拓展编号')
                     input_code = input("")
-                    if int(input_code)>len(plugin['list']):
+                    if int(input_code)>len(plugin['List']):
                         print('输入错误')
                     else:
                         # 读取plugin.json,获取插件信息
@@ -328,13 +369,15 @@ print(fanbookbotapi.send_user_message(bot_token='').text)
                             with open('plugin.json', 'r', encoding='utf-8') as f:
                                 plugin = json.load(f)
                         except:
-                            plugin={'list':[]}
+                            plugin={'List':[]}
                         # 运行插件
                         try:
-                            if plugin['list'][int(input_code)-1]['type']=='exe':
-                                os.startfile(f'plugin/{plugin["list"][int(input_code)-1]["url"]}')
-                            elif plugin['list'][int(input_code)-1]['type']=='py':
-                                run_file(f'plugin/{plugin["list"][int(input_code)-1]["url"]}',type='plugin')
+                            if 'exe' in plugin['List'][int(input_code)-1]['File']['Type']:
+                                win32api.ShellExecute(0, 'open', f'plugin\\{plugin["List"][int(input_code)-1]["File"]["Url"].split("/")[-1]}', '', '', 1)
+                            elif 'py' in plugin['List'][int(input_code)-1]['File']['Type']:
+                                run_file(f'plugin/{plugin["List"][int(input_code)-1]["File"]["Url"].split("/")[-1]}',type='plugin')
+                            else:
+                                logger.error(f"不支持的文件类型：{plugin['List'][int(input_code)-1]['File']['Type']}")
                         except Exception as e:
                             # 获取详细的错误信息
                             error_info = traceback.format_exc()
@@ -344,18 +387,16 @@ print(fanbookbotapi.send_user_message(bot_token='').text)
                 try:
                     with open('plugin.json', 'r', encoding='utf-8') as f:
                         plugin = json.load(f)
-                    # 删除重复的插件
-                    plugin['list'] = list({v['id']:v for v in plugin['list']}.values())
                 except:
-                    plugin={'list':[]}
-                for i in range(len(plugin['list'])):
-                    print(i+1,'：',plugin['list'][i]['name'])
-                if len(plugin['list'])==0:
+                    plugin={'List':[]}
+                for i in range(len(plugin['List'])):
+                    print(i+1,'：',plugin['List'][i]['Name'])
+                if len(plugin['List'])==0:
                     print('没有安装任何插件')
                 else:
                     print('请输入要删除的拓展编号')
                     input_code = input("")
-                    if int(input_code)>len(plugin['list']):
+                    if int(input_code)>len(plugin['List']):
                         print('输入错误')
                     else:
                         # 读取plugin.json,获取插件信息
@@ -363,14 +404,14 @@ print(fanbookbotapi.send_user_message(bot_token='').text)
                             with open('plugin.json', 'r', encoding='utf-8') as f:
                                 plugin = json.load(f)
                         except:
-                            plugin={'list':[]}
+                            plugin={'List':[]}
                         # 删除插件
                         try:
-                            plugin['list'].pop(int(input_code)-1)
+                            os.remove(f'plugin/{plugin["List"][int(input_code)-1]["File"]["Url"].split("/")[-1]}')
+                            plugin['List'].pop(int(input_code)-1)
                             with open('plugin.json', 'w', encoding='utf-8') as f:
                                 json.dump(plugin, f, ensure_ascii=False, indent=4)
-                            os.remove(f'plugin/{plugin["list"][int(input_code)-1]["url"]}')
-                            logger.info('删除完成')
+                            logger.info('插件删除完成')
                         except Exception as e:
                             # 获取详细的错误信息
                             error_info = traceback.format_exc()
