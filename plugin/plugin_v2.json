@@ -1,0 +1,64 @@
+{
+  "list": [
+    {
+      "name": "项目快速创建工具",
+      "info": "快速创建一个示例项目文件",
+      "version": "1.1",
+      "date": "2024/9/20",
+      "author": {
+        "name": "王大哥(4562997)",
+        "labels": "WDG团队官方",
+        "img": "https://fb-cdn.fanbook.cn/fanbook/app/files/service/headImage/5444a0a72e787ca35d1b62dfe6910afe.png"
+      },
+      "file": {
+        "type": "python源文件",
+        "url": "http://124.221.67.43/xmkscjgj.py"
+      }
+    },
+    {
+      "name": "机器人控制器",
+      "info": "经典调用功能、0代码操作机器人的工具",
+      "version": "5.295",
+      "date": "2024/9/20",
+      "author": {
+        "name": "王大哥(4562997)",
+        "labels": "WDG团队官方",
+        "img": "https://fb-cdn.fanbook.cn/fanbook/app/files/service/headImage/5444a0a72e787ca35d1b62dfe6910afe.png"
+      },
+      "file": {
+        "type": "python源文件",
+        "url": "http://124.221.67.43/jqr-5.295.py"
+      }
+    },
+    {
+      "name": "消息卡片编辑器",
+      "info": "创建好看的消息卡片，官方版的优化版\n需要使用启动工具启动\n卡片的json不能直接用，还需要套一层json(可以使用消息卡片打包工具)\n文件13MB，下载需要等待一分钟，请耐心等待",
+      "version": "1.3",
+      "date": "2024/9/20",
+      "author": {
+        "name": "王大哥(4562997)",
+        "labels": "WDG团队官方",
+        "img": "https://fb-cdn.fanbook.cn/fanbook/app/files/service/headImage/5444a0a72e787ca35d1b62dfe6910afe.png"
+      },
+      "file": {
+        "type": "exe(自解压压缩包)",
+        "url": "http://124.221.67.43/fmce.exe"
+      }
+    },
+    {
+      "name": "消息卡片编辑器启动工具",
+      "info": "快速解压并运行消息卡片编辑器",
+      "version": "1.0",
+      "date": "2024/9/20",
+      "author": {
+        "name": "王大哥(4562997)",
+        "labels": "WDG团队官方",
+        "img": "https://fb-cdn.fanbook.cn/fanbook/app/files/service/headImage/5444a0a72e787ca35d1b62dfe6910afe.png"
+      },
+      "file": {
+        "type": "exe(单文件可执行程序)",
+        "url": "http://124.221.67.43/fmceTool.exe"
+      }
+    }
+  ]
+}
