@@ -28,19 +28,18 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             listBox1 = new ListBox();
             label1 = new Label();
             button1 = new Button();
             button2 = new Button();
             label2 = new Label();
             panel1 = new Panel();
-            label5 = new Label();
+            label9 = new Label();
             label13 = new Label();
+            label5 = new Label();
             label12 = new Label();
             label11 = new Label();
             label10 = new Label();
-            label9 = new Label();
             label8 = new Label();
             label7 = new Label();
             label6 = new Label();
@@ -116,12 +115,12 @@
             // 
             panel1.BackColor = SystemColors.ControlLightLight;
             panel1.BorderStyle = BorderStyle.FixedSingle;
-            panel1.Controls.Add(label5);
+            panel1.Controls.Add(label9);
             panel1.Controls.Add(label13);
+            panel1.Controls.Add(label5);
             panel1.Controls.Add(label12);
             panel1.Controls.Add(label11);
             panel1.Controls.Add(label10);
-            panel1.Controls.Add(label9);
             panel1.Controls.Add(label8);
             panel1.Controls.Add(label7);
             panel1.Controls.Add(label6);
@@ -132,6 +131,25 @@
             panel1.Name = "panel1";
             panel1.Size = new Size(647, 157);
             panel1.TabIndex = 5;
+            // 
+            // label9
+            // 
+            label9.AutoSize = true;
+            label9.Location = new Point(66, 121);
+            label9.Name = "label9";
+            label9.Padding = new Padding(5, 0, 0, 0);
+            label9.Size = new Size(48, 17);
+            label9.TabIndex = 7;
+            label9.Text = "label9";
+            // 
+            // label13
+            // 
+            label13.Location = new Point(42, 104);
+            label13.Name = "label13";
+            label13.Padding = new Padding(5, 0, 0, 0);
+            label13.Size = new Size(109, 17);
+            label13.TabIndex = 11;
+            label13.Text = "label13";
             // 
             // label5
             // 
@@ -145,18 +163,10 @@
             label5.TabIndex = 12;
             label5.Text = "已验证";
             // 
-            // label13
-            // 
-            label13.AutoSize = true;
-            label13.Location = new Point(42, 104);
-            label13.Name = "label13";
-            label13.Size = new Size(50, 17);
-            label13.TabIndex = 11;
-            label13.Text = "label13";
-            // 
             // label12
             // 
             label12.AutoSize = true;
+            label12.BackColor = Color.White;
             label12.Location = new Point(4, 104);
             label12.Name = "label12";
             label12.Size = new Size(44, 17);
@@ -168,7 +178,8 @@
             label11.AutoSize = true;
             label11.Location = new Point(42, 138);
             label11.Name = "label11";
-            label11.Size = new Size(50, 17);
+            label11.Padding = new Padding(2, 0, 0, 0);
+            label11.Size = new Size(52, 17);
             label11.TabIndex = 9;
             label11.Text = "label11";
             // 
@@ -180,15 +191,6 @@
             label10.Size = new Size(44, 17);
             label10.TabIndex = 8;
             label10.Text = "版本：";
-            // 
-            // label9
-            // 
-            label9.AutoSize = true;
-            label9.Location = new Point(63, 121);
-            label9.Name = "label9";
-            label9.Size = new Size(43, 17);
-            label9.TabIndex = 7;
-            label9.Text = "label9";
             // 
             // label8
             // 
@@ -213,17 +215,15 @@
             // 
             // label6
             // 
-            label6.AutoSize = true;
-            label6.Location = new Point(360, 12);
+            label6.Location = new Point(362, 12);
             label6.Name = "label6";
-            label6.Size = new Size(94, 17);
+            label6.Size = new Size(131, 17);
             label6.TabIndex = 4;
             label6.Text = "用户名(123456)";
             // 
             // pictureBox1
             // 
             pictureBox1.BorderStyle = BorderStyle.FixedSingle;
-            pictureBox1.Image = (Image)resources.GetObject("pictureBox1.Image");
             pictureBox1.Location = new Point(323, 3);
             pictureBox1.Name = "pictureBox1";
             pictureBox1.Size = new Size(37, 37);

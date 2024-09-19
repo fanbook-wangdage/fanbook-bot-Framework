@@ -17,6 +17,20 @@ namespace pluginInstallTool
             listBox1.SelectedIndex = -1;
             this.StartPosition = FormStartPosition.CenterScreen;
             this.TopMost = true;
+            label3.Visible = false;
+            this.label4.Visible = false;
+            this.label5.Visible = false;
+            this.label6.Visible = false;
+            this.label7.Visible = false;
+            this.label8.Visible = false;
+            this.label9.Visible = false;
+            this.label10.Visible = false;
+            this.label11.Visible = false;
+            this.label12.Visible = false;
+            this.label13.Visible = false;
+            pictureBox1.Visible = false;
+            label6.AutoEllipsis = true; // 使文本超出时显示省略号
+
 
             // Ensure the plugin folder exists
             if (!Directory.Exists(pluginFolderPath))
@@ -48,6 +62,8 @@ namespace pluginInstallTool
             {
                 if (listBox1.SelectedIndex != -1)
                 {
+                    label1.Text = "正在加载";
+                    Task.Delay(100).Wait();
                     var selectedPlugin = pluginList.List[listBox1.SelectedIndex];
                     label3.Text = selectedPlugin.Name;
                     label4.Text = selectedPlugin.Info;
@@ -56,7 +72,23 @@ namespace pluginInstallTool
                     label6.Text = selectedPlugin.Author.Name;
                     label7.Text = selectedPlugin.Author.Labels;
                     label13.Text = selectedPlugin.File.Type;
+                    Task.Delay(100).Wait();
+                    pictureBox1.Visible = true;
+                    label3.Visible = true;
+                    label4.Visible = true;
+                    label5.Visible = true;
+                    label6.Visible = true;
+                    label7.Visible = true;
+                    label8.Visible = true;
+                    label9.Visible = true;
+                    label10.Visible = true;
+                    label11.Visible = true;
+                    label12.Visible = true;
+                    label13.Visible = true;
+                    Task.Delay(300).Wait();
                     pictureBox1.Load(selectedPlugin.Author.Img);
+                    label1.Text = "加载完成";
+
                 }
             };
         }
@@ -143,6 +175,7 @@ namespace pluginInstallTool
         {
             this.Close();
         }
+
     }
 
     public class Author
