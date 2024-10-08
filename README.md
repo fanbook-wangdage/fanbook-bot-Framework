@@ -1,6 +1,7 @@
 # fanbook-bot-Framework
 
 fanbook机器人框架，无需python环境，甚至无需编码运行机器人  
+文档见：http://docs.wdg.cloudns.ch/  
 0基础写bot：https://www.bilibili.com/opus/976998286971895843
 
 ## 快速上手
